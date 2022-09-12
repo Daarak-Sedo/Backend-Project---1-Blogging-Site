@@ -1,34 +1,58 @@
 const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
 const { default: mongoose } = require('mongoose');
+const passValidator = require('password-validator');
+const emailValidator = require('email-validator')
+
 
 
 const createAuthor = async function (req, res) {
     try {
         let author = req.body
-
          //<------Checking Whether Request Body is empty or not----------->//
         if (Object.keys(author).length == 0) {
-            return res.status(400).send({ status: false, msg: "Invalid request Please provide valid Author  details" }); }
+            return res.status(400).send({ status: false, msg: "Invalid request Please provide valid Author  details" });
+        }
 
         if (!author.fname) return res.status(400).send({ msg: " First name is required " })
         if (!author.lname) return res.status(400).send({ msg: " Last name is required " })
         if (!author.email) return res.status(400).send({ msg: " email is required " })
         if (!author.password) return res.status(400).send({ msg: " password is required " })
-
-        //<-------Validation of Title----------->//
         let titleEnum = ['Mr', 'Mrs', 'Miss']
 
+         //<-------Validation of Title----------->//
         if (!titleEnum.includes(author.title)) {
             res.status(400).send({ status: false, msg: "title should be Mr, Mrs or Miss" })
         }
-  
-        let checkEmail = await authorModel.findOne({email:author.email})
-        if(checkEmail) return  res.status(409).send({msg: "Email already exists"}) // conflict for Duplication 409
-    //<-------Author Creation----------->//
+        //<-------Validation of email--formate----------->//
+        if (!emailValidator.validate(author.email)) {
+            return res.status(400).send({ status: false, msg: "Check the format of the given email" })
+        }
+         //<-------Validation of email--already-present-or-not----------->//
+        let emailValidation = await authorModel.findOne({ email: author.email })
+        if (emailValidation) {
+            return res.status(409).send({ status: false, msg: "This  email  already exists " })
+        }
+          //<-------Validation of password--minimum-lenght----------->//
+        const schema = new passValidator();
+        schema.is().min(6)
+        if (!schema.validate(author.password)) {
+            return res.status(400).send({ status: false, msg: "minimum length of password should be 6 characters" })
+        }
+         //<-------Validation of password--maximum-lenght----------->//
+        schema.is().max(12)
+        if (!schema.validate(author.password)) {
+            return res.status(400).send({ status: false, msg: "max length of password should be 12 characters" })
+        }
+         //<-------Validation of password--space-not-allow---------->//
+        schema.has().not().spaces()
+        if (!schema.validate(author.password)) {
+            return res.status(400).send({ status: false, msg: "space not allowed in password" })
+        }
+
         let authorCreated = await authorModel.create(author)
+
         res.status(201).send({ data: authorCreated })
-        
     } catch (error) {
         res.status(500).send({ msg: error.message })
     }
