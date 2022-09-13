@@ -7,8 +7,6 @@ const {authenticate, authorize}= require("../middlewares/auth")
 
 
 
-
-
 //<-------------This API used for Create Author---------------->//
 router.post("/authors", authorController.createAuthor)
 

@@ -1,4 +1,3 @@
-const authorModel = require("../models/authorModel")
 const blogModel = require("../models/blogModel")
 const mongoose = require('mongoose');
 
@@ -69,10 +68,7 @@ const updateBlog = async (req, res) => {
         if (!isValid) return res.status(400).send({ msg: "enter valid objectID" })
 
         let author = req.body
-        let title = req.body.title
-        let body = req.body.body
-        let tags = req.body.tags
-        let subCategory = req.body.subCategory
+        let {title,body,tags,subCategory}=req.body    //by discturing mathod
 
         if (Object.keys(author).length == 0) {
             return res.status(400).send({ status: false, msg: "Invalid request Please provide valid Author  details" });
@@ -105,7 +101,7 @@ const deleteBlog = async (req, res) => {
         let date = Date.now()
 
         let alert = await blogModel.findOne({ _id: inputId, isDeleted: true })
-        if (alert) return res.status(409).send({ msg: "Blog already deleted" })
+        if (alert) return res.status(400).send({ msg: "Blog already deleted" })
 
         let data = await blogModel.findOneAndUpdate({ _id: inputId },
             { $set: { isDeleted: true, deletedAt: date } }, { new: true })
@@ -141,11 +137,5 @@ const  deleteBlogQuery = async (req, res) => {
 }
 
 
-
-// module.exports.createBlog = createBlog
-// module.exports.getBlogsData = getBlogsData
-// module.exports.updateBlog = updateBlog
-// module.exports.deleteBlog = deleteBlog
-// module.exports.deleteBlogQuery = deleteBlogQuery
 
 module.exports = {createBlog,getBlogsData,updateBlog,deleteBlog,deleteBlogQuery}
