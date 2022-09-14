@@ -3,7 +3,7 @@ const router = express.Router();
 
 const authorController = require("../controllers/authorController")
 const blogController = require("../controllers/blogController")
-const {authenticate, authorize}= require("../middlewares/auth")
+const { authenticate, authorize } = require("../middlewares/auth")
 
 
 
@@ -12,23 +12,23 @@ router.post("/authors", authorController.createAuthor)
 
 
 //<--------------This API used for Log in Author------------------>//
-router.post("/Blogs",authenticate,blogController.createBlog)
+router.post("/Blogs", authenticate, blogController.createBlog)
 
 
 //<--------------------This API used for Create Blogs-------------->//
-router.get("/getBlogs",authenticate,blogController.getBlogsData)
+router.get("/getBlogs", authenticate,blogController.getBlogsData)
 
 
 //<----------------This API used for Fetch Blogs of Logged in Author----------->//
-router.put("/updateBlog/:blogId",authorize,blogController.updateBlog)
+router.put("/blogs/:blogId", authorize, blogController.updateBlog)
 
 
 //<----------------This API used for Update Blogs of Logged in Author---------->//
-router.delete("/deleteBlog/:blogId",authorize,blogController.deleteBlog)
+router.delete("/blogs/:blogId", authorize, blogController.deleteBlog)
 
 
 //<----------------These APIs used for Deleting Blogs of Logged in Author--------->//
-router.delete("/deleteBlogQuery",authenticate,blogController.deleteBlogQuery)
+router.delete("/blogs", authenticate, blogController.deleteBlogQuery)
 
 
 //<-------This API is used for handling any invalid Endpoints--------->//

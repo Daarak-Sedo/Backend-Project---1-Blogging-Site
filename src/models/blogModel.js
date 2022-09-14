@@ -17,7 +17,7 @@ const blogSchema = new mongoose.Schema({
         required: true,
         trim: true,
         unique: true,
-        
+
     },
     tags: {
         type: [String],
@@ -32,11 +32,11 @@ const blogSchema = new mongoose.Schema({
         type: [String],
         trim: true
     },
-     deletedAt:{
-        type : Date,
-        require : true,
-        default : Date.now
-    } ,
+    deletedAt: {
+        type: Date,
+        require: true,
+        default: Date.now
+    },
 
     isDeleted: {
         type: Boolean,
@@ -44,12 +44,12 @@ const blogSchema = new mongoose.Schema({
     },
 
     publishedAt: {
-       type : Date,
+        type: Date,
         require: true,
-        default : Date.now
+        default: Date.now
     },
 
-  isPublished: {
+    isPublished: {
         type: Boolean,
         default: true,
     },
