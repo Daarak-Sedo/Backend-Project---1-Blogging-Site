@@ -10,11 +10,6 @@ const createBlog = async function (req, res) {
         if (!(Blog.title && Blog.body && Blog.authorId && Blog.category))
         return res.status(400).send({ status: false, msg: "Please fill the All Mandatory Fields." });
 
-        // if (!Blog.title) return res.status(400).send({ status: false, msg: " title is required " })
-        // if (!Blog.body) return res.status(400).send({ status: false, msg: "body is required " })
-        // if (!Blog.authorId) return res.status(400).send({ status: false, msg: " authorId is required " })
-        // if (!Blog.category) return res.status(400).send({ status: false, msg: " category is require" })
-
         //<-------Validation of Blog Body----------->// 
         if (!/^[A-Za-z _-]+$/.test(Blog.title)) {
             return res.status(400).send({ status: false, message: `title should contains only alphabets and - Charactor` })
