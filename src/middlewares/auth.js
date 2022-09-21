@@ -31,7 +31,7 @@ const authorize = function (req, res, next) {
     let userLoggedIn = decodedToken.authorId
 
 
-    if (userLoggedIn = userTobeModified) return res.status(403).send({ status: false, msg: " you are not Authorized" })
+    if (userLoggedIn == userTobeModified) return res.status(403).send({ status: false, msg: " you are not Authorized" })
     else next()
 
   } catch (error) {
